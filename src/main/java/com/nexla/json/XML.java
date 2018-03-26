@@ -1,4 +1,4 @@
-package org.json;
+package com.nexla.json;
 
 /*
 Copyright (c) 2015 JSON.org
