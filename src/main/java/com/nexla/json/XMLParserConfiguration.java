@@ -46,6 +46,11 @@ public class XMLParserConfiguration {
      * they should try to be guessed into JSON values (numeric, boolean, string)
      */
     private boolean keepStrings;
+
+    /**
+     * Add prefix to attribute names.
+     */
+    private String attributePrefix;
     
     /**
      * The name of the key in a JSON Object that indicates a CDATA section. Historically this has
@@ -75,6 +80,7 @@ public class XMLParserConfiguration {
         this.cDataTagName = "content";
         this.convertNilAttributeToNull = false;
         this.xsiTypeMap = Collections.emptyMap();
+        this.attributePrefix = "";
     }
 
     /**
@@ -153,11 +159,13 @@ public class XMLParserConfiguration {
      *                   xsi:type="integer" as integer,  xsi:type="string" as string
      */
     private XMLParserConfiguration (final boolean keepStrings, final String cDataTagName,
-            final boolean convertNilAttributeToNull, final Map<String, XMLXsiTypeConverter<?>> xsiTypeMap ) {
+            final boolean convertNilAttributeToNull, final Map<String, XMLXsiTypeConverter<?>> xsiTypeMap,
+            final String attributePrefix) {
         this.keepStrings = keepStrings;
         this.cDataTagName = cDataTagName;
         this.convertNilAttributeToNull = convertNilAttributeToNull;
         this.xsiTypeMap = Collections.unmodifiableMap(xsiTypeMap);
+        this.attributePrefix = attributePrefix;
     }
 
     /**
@@ -174,7 +182,8 @@ public class XMLParserConfiguration {
                 this.keepStrings,
                 this.cDataTagName,
                 this.convertNilAttributeToNull,
-                this.xsiTypeMap
+                this.xsiTypeMap,
+                this.attributePrefix
         );
     }
     
@@ -215,6 +224,15 @@ public class XMLParserConfiguration {
     }
 
     /**
+     * Returns attribute prefix.
+     *
+     * @return attribute prefix
+     */
+    public String getAttributePrefix() {
+        return attributePrefix;
+    }
+
+    /**
      * The name of the key in a JSON Object that indicates a CDATA section. Historically this has
      * been the value "content" but can be changed. Use <code>null</code> to indicate no CDATA
      * processing.
@@ -227,6 +245,20 @@ public class XMLParserConfiguration {
     public XMLParserConfiguration withcDataTagName(final String newVal) {
         XMLParserConfiguration newConfig = this.clone();
         newConfig.cDataTagName = newVal;
+        return newConfig;
+    }
+
+    /**
+     * The attribute prefix.
+     *
+     * @param newVal
+     *      new value to use for the {@link #attributePrefix} configuration option.
+     *
+     * @return The existing configuration will not be modified. A new configuration is returned.
+     */
+    public XMLParserConfiguration withAttributePrefix(final String newVal) {
+        XMLParserConfiguration newConfig = this.clone();
+        newConfig.attributePrefix = newVal;
         return newConfig;
     }
 
